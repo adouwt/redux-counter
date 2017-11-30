@@ -1,0 +1,4 @@
+1.大体内容跟demo 1一样
+2.多了webpack.config.js的 加载loder,以及安装这个loders的命令
+    npm install  css-loader style-loader --save-dev
+    插件使用 http://blog.csdn.net/a1104258464/article/details/51968996

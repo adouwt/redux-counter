@@ -1,0 +1,13 @@
+﻿1.直接在浏览器中打开index.html
+2.加载index的时候，会去寻找js文件，bundle js文件,这个文件怎么来的？转3
+3.bundleJs文件是由 mainJs被webpack打包来的。
+4.mainJs如何被打包成bundleJs？转到5
+5.webpack.config.js是webpack 的配置文件，配置了 入口文件和输出文件；入口文件中就有了要转化的mainJs；输出文件就有了生成的bundleJs.
+6.mainjs中可以require 其他的js ,同级目录下，路径是 “./xxx.js”
+7.webpack.config.js 中的入口文件可以有多个
+   但是最好统一写成这个样子：
+    entry: {
+        bundle1 :'./main.js', 
+        bundle2 :'./main2.js'
+    }
+    不论是多个还是一个，都最好写成这个样子。
