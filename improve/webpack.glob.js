@@ -1,4 +1,5 @@
 'use strict';
+const webpack = require('webpack');
 // 获取文件目录下文件
 const glob = require('glob');
 const path = require('path');
@@ -59,9 +60,9 @@ module.exports = {
     entry: entry,
     output: {
         path: path.join(__dirname, `dist`),
+        // path: '/home/proj/cdn/assets/[hash]',
         filename: '[name]_[chunkhash:8].js'
     },
-    mode: 'production',
     module: {
         rules: [
             {
@@ -108,6 +109,10 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.BannerPlugin({
+            // 打包到文件中
+            banner: '+++++ adouwt 版权拥有，侵权必究，+++++++'
+        }),
         new MiniCssExtractPlugin({
             filename: '[name]_[contenthash:8].css'
         }),
@@ -117,5 +122,7 @@ module.exports = {
         }),
         new CleanWebpackPlugin(),
         new ProgressBarPlugin()
-    ].concat(HtmlWebpackPlugins)
+    ].concat(HtmlWebpackPlugins),
+    devtool: 'inline-source-map',
+    mode: 'devlopment',
 };

@@ -5,10 +5,12 @@ node_modules/
 improve/node_modules/
 demo1/node_modules/
 demo2/node_modules/
+improve/dist/
+demo1/dist/
+demo2/dist/
+
+
 npm-debug.log
-
 config.js
-
 assets/img
-
 wsy_test*
