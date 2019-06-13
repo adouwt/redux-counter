@@ -33,6 +33,7 @@ const serMpa = () => {
         HtmlWebpackPlugins.push(
             new HtmlWebpackPlugin({
                 template: path.join(__dirname, `src/${pageName[1]}/index.html`),
+                loading: '页面正在努力加载中。。。',
                 filename: `${pageName[1]}.html`,
                 chunks: [pageName[1]],
                 inject: true,
@@ -81,7 +82,14 @@ module.exports = {
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
-                    'less-loader'
+                    'less-loader',
+                    {
+                        loader: 'px2rem-loader',
+                        options: {
+                            remUni: 75,
+                            remPrecision: 8 // rem 的小数点数
+                        }
+                    }
                 ]
             },
             {
@@ -124,5 +132,5 @@ module.exports = {
         new ProgressBarPlugin()
     ].concat(HtmlWebpackPlugins),
     devtool: 'inline-source-map',
-    mode: 'devlopment',
+    mode: 'production',
 };
