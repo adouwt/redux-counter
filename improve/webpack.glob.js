@@ -12,6 +12,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // 打包进度显示
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 
 const serMpa = () => {
     const entry = {};
@@ -35,7 +36,7 @@ const serMpa = () => {
                 template: path.join(__dirname, `src/${pageName[1]}/index.html`),
                 loading: '页面正在努力加载中。。。',
                 filename: `${pageName[1]}.html`,
-                chunks: [pageName[1]],
+                chunks: ['vendors', pageName[1]],
                 inject: true,
                 minify: {
                     html5: true,
@@ -62,7 +63,26 @@ module.exports = {
     output: {
         path: path.join(__dirname, `dist`),
         // path: '/home/proj/cdn/assets/[hash]',
-        filename: '[name]_[chunkhash:8].js'
+        filename: '[name]_[chunkhash:8].js',
+        // chunkFilename: '[name].bundle.js',
+    },
+    optimization: {
+        splitChunks: {
+          chunks: 'all',
+          minSize: 0,
+        //   maxSize: 0,
+          maxAsyncRequests: 5,
+          maxInitialRequests: 3,
+          automaticNameDelimiter: '~',
+          name: true, 
+          cacheGroups: {
+            commons: {
+                name: 'commons',
+                chunks: 'all',
+                minChunks: 2,
+            },
+          }
+        }
     },
     module: {
         rules: [
@@ -129,7 +149,21 @@ module.exports = {
             cssProcessor: require('cssnano')
         }),
         new CleanWebpackPlugin(),
-        new ProgressBarPlugin()
+        new ProgressBarPlugin(),
+        // new HtmlWebpackExternalsPlugin({
+        //     externals: [
+        //         {
+        //           module: 'react',
+        //           entry: 'https://unpkg.com/react@16/umd/react.production.min.js',
+        //           global: 'React',
+        //         },
+        //         {
+        //             module: 'react-dom',
+        //             entry: 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
+        //             global: 'ReactDOM',
+        //         },
+        //       ],
+        // })
     ].concat(HtmlWebpackPlugins),
     devtool: 'inline-source-map',
     mode: 'production',

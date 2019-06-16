@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import logo from '../images/logo.png';
 import './index.less';
-
+import '../../common/index'
 class Search extends React.Component {
 
     render() {
