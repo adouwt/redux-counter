@@ -1,55 +1,73 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import {createStore} from "redux";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import ReactDOM from 'react-dom'
+import { createStore } from 'redux'
+import { Provider, connect } from 'react-redux'
 
-import Counter from "./components/counter";
-import ImageChanger from "./components/changeImg";
-// import counter from "./redux/reducer";
-// import imageChanger from "./redux/changeImg";
-import reducer from './reducers/index';
+// React component
+class Counter extends Component {
+  render() {
+    const { value, onIncreaseClick } = this.props
+    return (
+      <div>
+        <span>{value}</span>
+        <button onClick={onIncreaseClick}>Increase</button>
+      </div>
+    )
+  }
+}
 
-const store = createStore(reducer);
-// const store = createStore(reducer);
-// const store2 = createStore(imageChanger);
-const rootEl = document.getElementById('root');
+Counter.propTypes = {
+  value: PropTypes.number.isRequired,
+  onIncreaseClick: PropTypes.func.isRequired
+}
 
-console.log(store.getState())
-const render = () => ReactDOM.render(
-    <div>
-        <Counter 
-            value={store.getState().value}
-            onIncrement={()=>{
-                store.dispatch({
-                    type: "INCREMENT"
-                })
-            }}
-            onDecrement={()=>{
-                store.dispatch({
-                    type: "DECREMENT"
-                })
-            }}
-        />
-        <div>
-            <ImageChanger 
-                changeImg={store.getState().src} 
-                useNew={() => {
-                    store.dispatch({
-                        type: "OLD"
-                    }) 
-                }}
+// Action
+const increaseAction = { type: 'increase' }
 
-                useOld={() => {
-                    store.dispatch({
-                        type: "NEW"
-                    })
-                }}
-            /> 
-        </div>
-    </div>,
-    rootEl
+// Reducer
+function counter(state = { count: 0 }, action) {
+  const count = state.count
+  switch (action.type) {
+    case 'increase':
+      return { count: count + 1 }
+    default:
+      return state
+  }
+}
+
+// Store
+const store = createStore(counter)
+
+// Map Redux state to component props
+function mapStateToProps(state) {
+  return {
+    value: state.count
+  }
+}
+
+// Map Redux actions to component props
+function mapDispatchToProps(dispatch) {
+  return {
+    // onIncreaseClick: () => dispatch(increaseAction)
+    onIncreaseClick: () => {
+        // 异步操作
+        setTimeout(() => {
+            dispatch(increaseAction);
+        }, 500)
+    }
+  }
+}
+
+// Connected Component
+const App = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Counter)
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 )
-
-render();
-
-store.subscribe(render); // 订阅或者监听这个方法，当state的值发生变化触发render方法
-// store2.subscribe(render); // 订阅或者监听这个方法，当state的值发生变化触发render方法
