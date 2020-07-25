@@ -1,0 +1,16 @@
+{
+    "name": "demo1",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "pushother": "cd dist/ && git add . && git commit -m 'push dist files' && git push && git remote set-url --add test-puhs-other-git  git@github.com:adouwt/redux-counter.git && git push test-puhs-other-git test-puhs-other-git"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "webpack": "^2.2.1"
+    }
+  }
+  
